@@ -12,7 +12,7 @@ import (
 func (c *Controllers) GetAccount(ctx *gin.Context, params gen.GetAccountRequestObject) (gen.GetAccountResponseObject, error) {
 	// DIを行う
 	userrepo := userrepo.NewUserRepo()
-	trepo := transactionrepo.New(c.db)
+	trepo := transactionrepo.NewUserRepo()
 	uc := usecase.NewGetAccount(userrepo, trepo, c.db)
 	handler := handler.NewGetAccount(uc)
 	return handler.ServeHTTP(ctx), nil

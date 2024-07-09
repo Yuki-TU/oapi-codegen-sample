@@ -2,13 +2,7 @@ package userrepo
 
 import (
 	"context"
-	"database/sql"
 )
-
-type DBer interface {
-	Querier
-	WithTx(tx *sql.Tx) *Queries
-}
 
 // UserRepoer は、ユーザ情報に関するリポジトリのインターフェース
 type UserRepoer interface {

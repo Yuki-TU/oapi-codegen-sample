@@ -11,92 +11,11 @@ package mock_userrepo
 
 import (
 	context "context"
-	sql "database/sql"
 	reflect "reflect"
 
 	userrepo "github.com/Yuki-TU/oapi-codegen-sample/repository/userrepo"
 	gomock "go.uber.org/mock/gomock"
 )
-
-// MockDBer is a mock of DBer interface.
-type MockDBer struct {
-	ctrl     *gomock.Controller
-	recorder *MockDBerMockRecorder
-}
-
-// MockDBerMockRecorder is the mock recorder for MockDBer.
-type MockDBerMockRecorder struct {
-	mock *MockDBer
-}
-
-// NewMockDBer creates a new mock instance.
-func NewMockDBer(ctrl *gomock.Controller) *MockDBer {
-	mock := &MockDBer{ctrl: ctrl}
-	mock.recorder = &MockDBerMockRecorder{mock}
-	return mock
-}
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockDBer) EXPECT() *MockDBerMockRecorder {
-	return m.recorder
-}
-
-// GetByUserID mocks base method.
-func (m *MockDBer) GetByUserID(ctx context.Context, id int64) (userrepo.GetByUserIDRow, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetByUserID", ctx, id)
-	ret0, _ := ret[0].(userrepo.GetByUserIDRow)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetByUserID indicates an expected call of GetByUserID.
-func (mr *MockDBerMockRecorder) GetByUserID(ctx, id any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByUserID", reflect.TypeOf((*MockDBer)(nil).GetByUserID), ctx, id)
-}
-
-// UpdateUser mocks base method.
-func (m *MockDBer) UpdateUser(ctx context.Context, arg userrepo.UpdateUserParams) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateUser", ctx, arg)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// UpdateUser indicates an expected call of UpdateUser.
-func (mr *MockDBerMockRecorder) UpdateUser(ctx, arg any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUser", reflect.TypeOf((*MockDBer)(nil).UpdateUser), ctx, arg)
-}
-
-// UpdateUserMail mocks base method.
-func (m *MockDBer) UpdateUserMail(ctx context.Context, arg userrepo.UpdateUserMailParams) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateUserMail", ctx, arg)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// UpdateUserMail indicates an expected call of UpdateUserMail.
-func (mr *MockDBerMockRecorder) UpdateUserMail(ctx, arg any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUserMail", reflect.TypeOf((*MockDBer)(nil).UpdateUserMail), ctx, arg)
-}
-
-// WithTx mocks base method.
-func (m *MockDBer) WithTx(tx *sql.Tx) *userrepo.Queries {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "WithTx", tx)
-	ret0, _ := ret[0].(*userrepo.Queries)
-	return ret0
-}
-
-// WithTx indicates an expected call of WithTx.
-func (mr *MockDBerMockRecorder) WithTx(tx any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WithTx", reflect.TypeOf((*MockDBer)(nil).WithTx), tx)
-}
 
 // MockUserRepoer is a mock of UserRepoer interface.
 type MockUserRepoer struct {

@@ -26,7 +26,7 @@ func TestRepository_users_UpdateEmail(t *testing.T) {
 	}{
 		"ユーザーID_1のメールを更新する": {
 			input: input{
-				email: "before@sample.com",
+				email: "after@sample.com",
 				id:    1,
 			},
 			want: want{
@@ -48,26 +48,20 @@ func TestRepository_users_UpdateEmail(t *testing.T) {
 				_ = tx.Rollback()
 			})
 
+			// データ挿入
 			testdata.Users(t, ctx, tx, func(users []*testdata.User) {
-
+				users[0].Email = "fooo@hoge.com"
 			})
 
 			// 実行
 			r := &UserRepo{}
-			err = r.UpdateUserMail(ctx, tx,
-				UpdateUserMailParams{
-					ID:    tt.input.id,
-					Email: tt.input.email,
-				},
-			)
-			assert.Nil(t, err)
+			err = r.UpdateUserMail(ctx, tx, UpdateUserMailParams{
+				ID:    tt.input.id,
+				Email: tt.want.email,
+			})
 
 			// 確認
-			// err = r.UpdateUserMail(ctx, tx, UpdateUserMailParams{
-			// 	Email: tt.want.email,
-			// 	ID:    tt.input.id,
-			// })
-			assert.Nil(t, err)
+			assert.Equal(t, tt.want.err, err)
 			got, err := r.GetByUserID(ctx, tx, tt.input.id)
 			assert.Nil(t, err)
 			assert.Equal(t, tt.want.email, got.Email)
