@@ -1,0 +1,13 @@
+version: "2"
+sql:
+  - schema: "../migrations"
+    queries: "queries"
+    engine: "mysql"
+    gen:
+      go:
+        package: "sqlc"
+        emit_exact_table_names: true
+        emit_interface: true
+        sql_package: "database/sql"
+        out: "../../repository/sqlc"
+
