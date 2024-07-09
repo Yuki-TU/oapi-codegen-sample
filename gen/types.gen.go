@@ -9,9 +9,7 @@ const (
 
 // Error defines model for Error.
 type Error struct {
-	Message    *string `json:"message,omitempty"`
-	StatusCode *int64  `json:"statusCode,omitempty"`
-	Title      *string `json:"title,omitempty"`
+	Message string `json:"message"`
 }
 
 // N400Error defines model for 400Error.
@@ -20,11 +18,15 @@ type N400Error = Error
 // N401UnauthorizedError defines model for 401UnauthorizedError.
 type N401UnauthorizedError = Error
 
+// N404Error defines model for 404Error.
+type N404Error = Error
+
 // N500Error defines model for 500Error.
 type N500Error = Error
 
 // PutAccountJSONBody defines parameters for PutAccount.
 type PutAccountJSONBody struct {
+	Email          string `json:"email"`
 	FamilyName     string `json:"familyName"`
 	FamilyNameKana string `json:"familyNameKana"`
 	FirstName      string `json:"firstName"`

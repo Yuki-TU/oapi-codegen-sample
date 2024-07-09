@@ -5,7 +5,7 @@
 # gencode: ## コード自動生成
 # 	oapi-codegen -package gen -generate types -o gen/types.gen.go ./docs/openapi.yml
 # 	oapi-codegen -package gen -generate strict-server,gin -templates ./_tool/oapi/templates -o gen/server.gen.go ./docs/openapi.yml
-gencode: ## コード自動生成
+gencode: openapi ## コード自動生成
 	oapi-codegen -package gen -generate types -o gen/types.gen.go ./docs/openapi.yml
 	oapi-codegen -package gen -generate strict-server,gin -templates ./_tools/oapi/templates -o gen/server.gen.go ./docs/openapi.yml
 
@@ -25,6 +25,18 @@ mg-down: ## マイグレーション戻す
 .PHONY: sqlc
 sqlc:
 	sqlc generate -f ./_tools/sqlc/config.yaml
+
+
+.PHONY: mock
+mock: ## mock作成
+	mockgen -source=./handler/usecase.go -destination=./handler/_mock/mock_usecase.go
+	mockgen -source=./repository/userrepo/wrapper.go -destination=./repository/userrepo/_mock/mock_userrepo.go
+	mockgen -source=./repository/repository.go -destination=./repository/_mock/mock_repository.go
+
+.PHONY: test
+test: 
+	# go test -cover -race -shuffle=on ./...
+	go test -cover -race ./...
 
 .PHONY: help
 help: ## Show options

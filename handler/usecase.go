@@ -1,9 +1,16 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
+	"context"
+
+	"github.com/Yuki-TU/oapi-codegen-sample/gen"
+	"github.com/Yuki-TU/oapi-codegen-sample/usecase"
 )
 
 type GetAccountService interface {
-	GetAccount(ctx *gin.Context) (service.GetAccountResponse, error)
+	GetAccount(ctx context.Context) (usecase.GetAccountResponse, error)
+}
+
+type UpdateAccountUsecase interface {
+	UpdateAccount(ctx context.Context, input gen.PutAccountJSONRequestBody) (usecase.UpdateAccountResponse, error)
 }

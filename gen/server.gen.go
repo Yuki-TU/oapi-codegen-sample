@@ -96,6 +96,8 @@ type N400ErrorJSONResponse Error
 
 type N401UnauthorizedErrorJSONResponse Error
 
+type N404ErrorJSONResponse Error
+
 type N500ErrorJSONResponse Error
 
 type GetAccountRequestObject struct {
@@ -106,21 +108,17 @@ type GetAccountResponseObject interface {
 }
 
 type GetAccount200JSONResponse struct {
-	Data *struct {
-		// AcquisitionPoint 保有ポイント
-		AcquisitionPoint *int    `json:"acquisitionPoint,omitempty"`
-		Email            *string `json:"email,omitempty"`
-		FamilyName       *string `json:"familyName,omitempty"`
-		FamilyNameKana   *string `json:"familyNameKana,omitempty"`
-		FirstName        *string `json:"firstName,omitempty"`
-		FirstNameKana    *string `json:"firstNameKana,omitempty"`
+	// AcquisitionPoint 保有ポイント
+	AcquisitionPoint int    `json:"acquisitionPoint"`
+	Email            string `json:"email"`
+	FamilyName       string `json:"familyName"`
+	FamilyNameKana   string `json:"familyNameKana"`
+	FirstName        string `json:"firstName"`
+	FirstNameKana    string `json:"firstNameKana"`
 
-		// SendablePoint 送信可能ポイント
-		SendablePoint *int     `json:"sendablePoint,omitempty"`
-		UserId        *float32 `json:"userId,omitempty"`
-	} `json:"data,omitempty"`
-	Message    *string `json:"message,omitempty"`
-	StatusCode *int    `json:"statusCode,omitempty"`
+	// SendablePoint 送信可能ポイント
+	SendablePoint int     `json:"sendablePoint"`
+	UserId        float32 `json:"userId"`
 }
 
 func (response GetAccount200JSONResponse) VisitGetAccountResponse(w http.ResponseWriter) error {
@@ -159,9 +157,7 @@ type PutAccountResponseObject interface {
 }
 
 type PutAccount201JSONResponse struct {
-	Data       *map[string]interface{} `json:"data,omitempty"`
-	Message    *string                 `json:"message,omitempty"`
-	StatusCode *int                    `json:"statusCode,omitempty"`
+	Status string `json:"status"`
 }
 
 func (response PutAccount201JSONResponse) VisitPutAccountResponse(w http.ResponseWriter) error {
@@ -187,6 +183,15 @@ type PutAccount401JSONResponse struct {
 func (response PutAccount401JSONResponse) VisitPutAccountResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(401)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutAccount404JSONResponse struct{ N404ErrorJSONResponse }
+
+func (response PutAccount404JSONResponse) VisitPutAccountResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
 
 	return json.NewEncoder(w).Encode(response)
 }

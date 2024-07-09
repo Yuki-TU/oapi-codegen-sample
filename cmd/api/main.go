@@ -10,6 +10,7 @@ import (
 	"github.com/Yuki-TU/oapi-codegen-sample/config"
 	"github.com/Yuki-TU/oapi-codegen-sample/controller"
 	"github.com/Yuki-TU/oapi-codegen-sample/gen"
+	"github.com/Yuki-TU/oapi-codegen-sample/repository"
 	"github.com/gin-gonic/gin"
 )
 
@@ -33,7 +34,8 @@ func run(ctx context.Context) error {
 		gin.SetMode(gin.DebugMode)
 	}
 
-	r := gin.New()
+	r := gin.Default()
+	// r := gin.New()
 	// ミドルウェアの設定
 	// r.Use(middleware.Recovery)
 	// r.Use(middleware.Logger())
@@ -46,8 +48,11 @@ func run(ctx context.Context) error {
 	// }
 	// defer cleanup()
 
+	db := repository.NewDB()
+	defer db.Close()
+
 	// ルーティング初期化
-	impl := controller.NewController()
+	impl := controller.NewController(db)
 	strictServer := gen.NewStrictHandler(impl, nil)
 	gen.RegisterHandlersWithOptions(
 		r,

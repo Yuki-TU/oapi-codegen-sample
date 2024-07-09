@@ -1,10 +1,12 @@
 package handler
 
 import (
-	"net/http"
+	"fmt"
 
+	"github.com/Yuki-TU/oapi-codegen-sample/gen"
+	"github.com/Yuki-TU/oapi-codegen-sample/myerrors"
+	"github.com/cockroachdb/errors"
 	"github.com/gin-gonic/gin"
-	"github.com/hack-31/point-app-backend/domain/model"
 )
 
 type GetAccount struct {
@@ -15,38 +17,39 @@ func NewGetAccount(s GetAccountService) *GetAccount {
 	return &GetAccount{Service: s}
 }
 
-// ユーザ取得ハンドラー
-//
-// @param ctx ginContext
-func (gu *GetAccount) ServeHTTP(ctx *gin.Context) {
+func (gu *GetAccount) ServeHTTP(ctx *gin.Context) gen.GetAccountResponseObject {
 	user, err := gu.Service.GetAccount(ctx)
 
-	// エラーレスポンスを返す
-	const errTitle = "アカウントエラー"
 	if err != nil {
-		ErrResponse(ctx, http.StatusInternalServerError, errTitle, err.Error(), err)
-		return
+		ctx.Error(err)
+		if errors.Is(err, myerrors.ErrNotUser) {
+			return gen.GetAccount401JSONResponse{
+				N401UnauthorizedErrorJSONResponse: gen.N401UnauthorizedErrorJSONResponse{
+					Message: "ユーザが存在しません。",
+				},
+			}
+		}
+		return gen.GetAccount500JSONResponse{
+			N500ErrorJSONResponse: gen.N500ErrorJSONResponse{
+				Message: "予期せぬエラーが発生しました。",
+			},
+		}
 	}
 
-	rsp := struct {
-		AcquisitionPoint int          `json:"acquisitionPoint"`
-		Email            string       `json:"email"`
-		FamilyName       string       `json:"familyName"`
-		FamilyNameKana   string       `json:"familyNameKana"`
-		FirstName        string       `json:"firstName"`
-		FirstNameKana    string       `json:"firstNameKana"`
-		SendablePoint    int          `json:"sendablePoint"`
-		UserID           model.UserID `json:"userId"`
-	}{
-		AcquisitionPoint: user.AcquisitionPoint,
-		Email:            user.Email,
-		FamilyName:       user.FamilyName,
-		FamilyNameKana:   user.FamilyNameKana,
-		FirstName:        user.FirstName,
-		FirstNameKana:    user.FirstNameKana,
-		UserID:           user.ID,
-		SendablePoint:    user.SendablePoint,
+	fmt.Println(user)
+	return gen.GetAccount500JSONResponse{
+		N500ErrorJSONResponse: gen.N500ErrorJSONResponse{
+			Message: "予期せぬエラーが発生しました。",
+		},
 	}
-
-	APIResponse(ctx, http.StatusOK, "アカウント情報の取得に成功しました。", rsp)
+	// return gen.GetAccount200JSONResponse{
+	// 	UserId:           float32(user.UserID),
+	// 	Email:            user.Email,
+	// 	FamilyName:       user.FamilyName,
+	// 	AcquisitionPoint: user.AcquisitionPoint,
+	// 	FirstName:        user.FirstName,
+	// 	FamilyNameKana:   user.FamilyNameKana,
+	// 	FirstNameKana:    user.FirstNameKana,
+	// 	SendablePoint:    user.SendablePoint,
+	// }
 }

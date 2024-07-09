@@ -14,43 +14,42 @@ get:
           schema:
             type: object
             properties:
-              statusCode:
-                type: integer
-                format: number
-                example: 200
-              message:
+              familyName:
                 type: string
-                example: "アカウント情報の取得に成功しました。"
-              data:
-                type: object
-                properties:
-                  familyName:
-                    type: string
-                  userId:
-                    type: number
-                  familyNameKana:
-                    type: string
-                  firstName:
-                    type: string
-                  firstNameKana:
-                    type: string
-                  email:
-                    type: string
-                  acquisitionPoint:
-                    type: integer
-                    description: 保有ポイント
-                  sendablePoint:
-                    type: integer
-                    description: 送信可能ポイント
-                example:
-                  userId: 200
-                  familyName: 山田
-                  familyNameKana: ヤマダ
-                  firstName: 太郎
-                  firstNameKana: タロウ
-                  email: yamada@sample.com
-                  acquisitionPoint: 30000
-                  sendablePoint: 1000           
+              userId:
+                type: number
+              familyNameKana:
+                type: string
+              firstName:
+                type: string
+              firstNameKana:
+                type: string
+              email:
+                type: string
+              acquisitionPoint:
+                type: integer
+                description: 保有ポイント
+              sendablePoint:
+                type: integer
+                description: 送信可能ポイント
+            example:
+              userId: 200
+              familyName: 山田
+              familyNameKana: ヤマダ
+              firstName: 太郎
+              firstNameKana: タロウ
+              email: yamada@sample.com
+              acquisitionPoint: 30000
+              sendablePoint: 1000
+            required:
+              - userId
+              - familyName
+              - familyNameKana
+              - firstName
+              - firstNameKana
+              - email
+              - acquisitionPoint
+              - sendablePoint
     '401':
       $ref: '../openapi.yml#/components/responses/401UnauthorizedError'
     '500':
@@ -65,7 +64,7 @@ put:
   description: |
     - セッションキーのユーザ情報を更新する
   requestBody:
-    required: true
+    # required: true
     content:
       application/json:
         schema:
@@ -83,6 +82,9 @@ put:
             firstNameKana:
               type: string
               example: ホクサイ
+            email:
+              type: string
+              example: hoge@hoge.com
           required:
             - firstName
             - firstNameKana
@@ -97,19 +99,17 @@ put:
           schema:
             type: object
             properties:
-              statusCode:
-                type: integer
-                format: number
-                example: 201
-              message:
+              status:
                 type: string
-                example: "アカウント情報の更新に成功しました。"           
-              data:
-                type: object
-                example: null
+                example: "ok"
+            required:
+              - status
+
     '400':
-        $ref: '../openapi.yml#/components/responses/400Error'
+      $ref: '../openapi.yml#/components/responses/400Error'
     '401':
       $ref: '../openapi.yml#/components/responses/401UnauthorizedError'
+    '404':
+      $ref: '../openapi.yml#/components/responses/404Error'
     '500':
       $ref: '../openapi.yml#/components/responses/500Error'

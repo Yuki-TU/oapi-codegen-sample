@@ -2,19 +2,18 @@ package controller
 
 import (
 	"github.com/Yuki-TU/oapi-codegen-sample/gen"
+	"github.com/Yuki-TU/oapi-codegen-sample/handler"
+	"github.com/Yuki-TU/oapi-codegen-sample/repository/transactionrepo"
+	"github.com/Yuki-TU/oapi-codegen-sample/repository/userrepo"
+	"github.com/Yuki-TU/oapi-codegen-sample/usecase"
 	"github.com/gin-gonic/gin"
 )
 
-type Controllers struct{}
-
-func NewController() *Controllers {
-	return &Controllers{}
-}
-
 func (c *Controllers) GetAccount(ctx *gin.Context, params gen.GetAccountRequestObject) (gen.GetAccountResponseObject, error) {
-	return gen.GetAccount200JSONResponse{}, nil
-}
-
-func (c *Controllers) PutAccount(ctx *gin.Context, params gen.PutAccountRequestObject) (gen.PutAccountResponseObject, error) {
-	return gen.PutAccount201JSONResponse{}, nil
+	// DIを行う
+	userrepo := userrepo.NewUserRepo()
+	trepo := transactionrepo.New(c.db)
+	uc := usecase.NewGetAccount(userrepo, trepo, c.db)
+	handler := handler.NewGetAccount(uc)
+	return handler.ServeHTTP(ctx), nil
 }

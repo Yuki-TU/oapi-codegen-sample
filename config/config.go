@@ -27,7 +27,7 @@ var config Config
 // Load は、環境変数から設定を読み込みます。
 // 1回のみ呼び出してください。
 func Load() error {
-	if err := env.Parse(config); err != nil {
+	if err := env.Parse(&config); err != nil {
 		return err
 	}
 	return nil
