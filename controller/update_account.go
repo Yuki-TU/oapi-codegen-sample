@@ -10,8 +10,10 @@ import (
 
 func (c *Controllers) PutAccount(ctx *gin.Context, params gen.PutAccountRequestObject) (gen.PutAccountResponseObject, error) {
 	// DIを行う
-	userrepo := userrepo.NewUserRepo()
+	userrepo := userrepo.New()
 	uc := usecase.NewUpdateAcccount(userrepo, c.db)
+	// userrepo := repository.NewUserRepo()
+	// uc := usecase.NewUpdateAcccount(userrepo, c.db)
 	handler := handler.NewUpdatetAccount(uc)
 	return handler.ServeHTTP(ctx, *params.Body), nil
 }

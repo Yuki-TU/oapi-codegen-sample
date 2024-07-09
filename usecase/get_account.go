@@ -13,12 +13,12 @@ import (
 )
 
 type GetAccount struct {
-	UserRepo        userrepo.UserRepoer
+	UserRepo        userrepo.Querier
 	TransactionRepo transactionrepo.TransactionRepoer
 	DB              repository.DBer
 }
 
-func NewGetAccount(urepo userrepo.UserRepoer, trepo transactionrepo.TransactionRepoer, db *sql.DB) *GetAccount {
+func NewGetAccount(urepo userrepo.Querier, trepo transactionrepo.TransactionRepoer, db *sql.DB) *GetAccount {
 	return &GetAccount{
 		UserRepo:        urepo,
 		TransactionRepo: trepo,
