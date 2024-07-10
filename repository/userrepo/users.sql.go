@@ -21,19 +21,19 @@ VALUES (
 `
 
 type CreateUsersParams struct {
-	FamilyName     string
-	FamilyNameKana string
-	FirstName      string
-	FirstNameKana  string
-	Email          string
-	Password       string
-	SendingPoint   int32
-	CreatedAt      time.Time
-	UpdateAt       time.Time
+	FamilyName     string    `db:"family_name"`
+	FamilyNameKana string    `db:"family_name_kana"`
+	FirstName      string    `db:"first_name"`
+	FirstNameKana  string    `db:"first_name_kana"`
+	Email          string    `db:"email"`
+	Password       string    `db:"password"`
+	SendingPoint   int32     `db:"sending_point"`
+	CreatedAt      time.Time `db:"created_at"`
+	UpdateAt       time.Time `db:"update_at"`
 }
 
-func (q *Queries) CreateUsers(ctx context.Context, arg CreateUsersParams) (sql.Result, error) {
-	return q.db.ExecContext(ctx, createUsers,
+func (q *Queries) CreateUsers(ctx context.Context, db DBTX, arg CreateUsersParams) (sql.Result, error) {
+	return db.ExecContext(ctx, createUsers,
 		arg.FamilyName,
 		arg.FamilyNameKana,
 		arg.FirstName,
@@ -56,12 +56,12 @@ WHERE ` + "`" + `id` + "`" + ` = ?
 `
 
 type GetByUserIDRow struct {
-	ID    int64
-	Email string
+	ID    int64  `db:"id"`
+	Email string `db:"email"`
 }
 
-func (q *Queries) GetByUserID(ctx context.Context, id int64) (GetByUserIDRow, error) {
-	row := q.db.QueryRowContext(ctx, getByUserID, id)
+func (q *Queries) GetByUserID(ctx context.Context, db DBTX, id int64) (GetByUserIDRow, error) {
+	row := db.QueryRowContext(ctx, getByUserID, id)
 	var i GetByUserIDRow
 	err := row.Scan(&i.ID, &i.Email)
 	return i, err
@@ -80,16 +80,16 @@ WHERE ` + "`" + `id` + "`" + ` = ?
 `
 
 type UpdateUserParams struct {
-	FirstName      string
-	FamilyName     string
-	FirstNameKana  string
-	FamilyNameKana string
-	Email          string
-	ID             int64
+	FirstName      string `db:"first_name"`
+	FamilyName     string `db:"family_name"`
+	FirstNameKana  string `db:"first_name_kana"`
+	FamilyNameKana string `db:"family_name_kana"`
+	Email          string `db:"email"`
+	ID             int64  `db:"id"`
 }
 
-func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) error {
-	_, err := q.db.ExecContext(ctx, updateUser,
+func (q *Queries) UpdateUser(ctx context.Context, db DBTX, arg UpdateUserParams) error {
+	_, err := db.ExecContext(ctx, updateUser,
 		arg.FirstName,
 		arg.FamilyName,
 		arg.FirstNameKana,
@@ -109,11 +109,11 @@ WHERE ` + "`" + `id` + "`" + ` = ?
 `
 
 type UpdateUserMailParams struct {
-	Email string
-	ID    int64
+	Email string `db:"email"`
+	ID    int64  `db:"id"`
 }
 
-func (q *Queries) UpdateUserMail(ctx context.Context, arg UpdateUserMailParams) error {
-	_, err := q.db.ExecContext(ctx, updateUserMail, arg.Email, arg.ID)
+func (q *Queries) UpdateUserMail(ctx context.Context, db DBTX, arg UpdateUserMailParams) error {
+	_, err := db.ExecContext(ctx, updateUserMail, arg.Email, arg.ID)
 	return err
 }

@@ -10,6 +10,8 @@ sql:
         emit_interface: true
         sql_package: "database/sql"
         out: "../../repository/userrepo"
+        emit_methods_with_db_argument: true
+        emit_db_tags: true
   - schema: "../migrations"
     queries: "../../repository/transactionrepo"
     engine: "mysql"
@@ -20,8 +22,5 @@ sql:
         emit_interface: true
         sql_package: "database/sql"
         out: "../../repository/transactionrepo"
-    overrides:
-      - go_type:
-          path: "../../repository/models"
-          type: "User"
-          table: "users"
+        emit_methods_with_db_argument: true
+        emit_db_tags: true

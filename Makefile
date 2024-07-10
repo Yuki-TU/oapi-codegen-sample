@@ -17,7 +17,8 @@ new-mg: ## 新規作成
 	sql-migrate new -config=./_tools/sql-migrate/config.yaml -env=development $(name)
 
 mg-up: ## マイグレーション実行
-	sql-migrate up -config=./_tools/sql-migrate/config.yaml -env=development
+	# sql-migrate up -config=./_tools/sql-migrate/config.yaml -env=development
+	sql-migrate up -config=./_tools/sql-migrate/config.yaml -env=test
 
 mg-down: ## マイグレーション戻す
 	sql-migrate down -config=./_tools/sql-migrate/config.yaml -env=development
@@ -30,7 +31,7 @@ sqlc:
 .PHONY: mock
 mock: ## mock作成
 	mockgen -source=./handler/usecase.go -destination=./handler/_mock/mock_usecase.go
-	mockgen -source=./repository/userrepo/wrapper.go -destination=./repository/userrepo/_mock/mock_userrepo.go
+	mockgen -source=./repository/userrepo/querier.go -destination=./repository/userrepo/_mock/mock_querier.go
 	mockgen -source=./repository/repository.go -destination=./repository/_mock/mock_repository.go
 
 .PHONY: test

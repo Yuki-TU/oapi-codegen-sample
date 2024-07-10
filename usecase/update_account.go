@@ -13,11 +13,12 @@ import (
 )
 
 type UpdateAccount struct {
-	UserRepo userrepo.UserRepoer
+	// UserRepo repository.UserRepoer
+	UserRepo userrepo.Querier
 	Tx       repository.Beginner
 }
 
-func NewUpdateAcccount(userrepo userrepo.UserRepoer, tx repository.Beginner) *UpdateAccount {
+func NewUpdateAcccount(userrepo userrepo.Querier, tx repository.Beginner) *UpdateAccount {
 	return &UpdateAccount{
 		UserRepo: userrepo,
 		Tx:       tx,

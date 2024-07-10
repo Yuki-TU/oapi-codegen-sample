@@ -11,37 +11,37 @@ import (
 // 取引
 type Transactions struct {
 	// 取引の識別子
-	ID uint64
+	ID uint64 `db:"id"`
 	// 送信ユーザのID
-	SendingUserID uint64
+	SendingUserID uint64 `db:"sending_user_id"`
 	// 受信ユーザのID
-	ReceivingUserID uint64
+	ReceivingUserID uint64 `db:"receiving_user_id"`
 	// 取引ポイント
-	TransactionPoint int32
+	TransactionPoint int32 `db:"transaction_point"`
 	// 取引日時
-	TransactionAt time.Time
+	TransactionAt time.Time `db:"transaction_at"`
 }
 
 // ユーザー
 type Users struct {
 	// ユーザーの識別子
-	ID int64
+	ID int64 `db:"id"`
 	// 苗字
-	FamilyName string
+	FamilyName string `db:"family_name"`
 	// 苗字カナ
-	FamilyNameKana string
+	FamilyNameKana string `db:"family_name_kana"`
 	// 名前
-	FirstName string
+	FirstName string `db:"first_name"`
 	// 名前カナ
-	FirstNameKana string
+	FirstNameKana string `db:"first_name_kana"`
 	// メールアドレス
-	Email string
+	Email string `db:"email"`
 	// パスワードハッシュ
-	Password string
+	Password string `db:"password"`
 	// 送信可能ポイント
-	SendingPoint int32
+	SendingPoint int32 `db:"sending_point"`
 	// レコード作成日時
-	CreatedAt time.Time
+	CreatedAt time.Time `db:"created_at"`
 	// レコード修正日時
-	UpdateAt time.Time
+	UpdateAt time.Time `db:"update_at"`
 }

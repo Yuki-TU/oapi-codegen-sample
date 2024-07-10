@@ -8,3 +8,8 @@ development:
   datasource:  admin:password@tcp(db:3306)/point_app?parseTime=true
   dir: _tools/migrations
   table: migrations
+test:
+  dialect: mysql
+  datasource:  admin:password@tcp(db:3306)/point_app_test?parseTime=true
+  dir: _tools/migrations
+  table: migrations

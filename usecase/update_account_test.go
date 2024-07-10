@@ -151,7 +151,7 @@ func TestUpdateAccount(t *testing.T) {
 			// モックの定義
 			mockTx := testutils.NewTxForMock(t, ctx)
 
-			mockUserRepo := mock_userrepo.NewMockUserRepoer(ctrl)
+			mockUserRepo := mock_userrepo.NewMockQuerier(ctrl)
 			mockUserRepo.
 				EXPECT().GetByUserID(ctx, mockTx, tt.getByUserID.userID).Return(tt.getByUserID.res, tt.getByUserID.err).Times(tt.getByUserID.times)
 			mockUserRepo.
