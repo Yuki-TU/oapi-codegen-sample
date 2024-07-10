@@ -8,19 +8,17 @@ import (
 	"github.com/Yuki-TU/oapi-codegen-sample/gen"
 	"github.com/Yuki-TU/oapi-codegen-sample/myerrors"
 	"github.com/Yuki-TU/oapi-codegen-sample/repository"
-	"github.com/Yuki-TU/oapi-codegen-sample/repository/userrepo"
 	"github.com/cockroachdb/errors"
 )
 
 type UpdateAccount struct {
-	// UserRepo repository.UserRepoer
-	UserRepo userrepo.Querier
+	UserRepo repository.Querier
 	Tx       repository.Beginner
 }
 
-func NewUpdateAcccount(userrepo userrepo.Querier, tx repository.Beginner) *UpdateAccount {
+func NewUpdateAcccount(repository repository.Querier, tx repository.Beginner) *UpdateAccount {
 	return &UpdateAccount{
-		UserRepo: userrepo,
+		UserRepo: repository,
 		Tx:       tx,
 	}
 }
@@ -49,7 +47,7 @@ func (ua *UpdateAccount) UpdateAccount(ctx context.Context, input gen.PutAccount
 	}
 
 	// 更新
-	err = ua.UserRepo.UpdateUser(ctx, tx, userrepo.UpdateUserParams{
+	err = ua.UserRepo.UpdateUser(ctx, tx, repository.UpdateUserParams{
 		ID:             user.ID,
 		FirstName:      input.FirstName,
 		FamilyName:     input.FamilyName,

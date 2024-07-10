@@ -1,26 +1,14 @@
 version: "2"
 sql:
   - schema: "../migrations"
-    queries: "../../repository/userrepo"
+    queries: "../../repository/queries"
     engine: "mysql"
     gen:
       go:
-        package: "userrepo"
+        package: "repository"
         emit_exact_table_names: true
         emit_interface: true
         sql_package: "database/sql"
-        out: "../../repository/userrepo"
-        emit_methods_with_db_argument: true
-        emit_db_tags: true
-  - schema: "../migrations"
-    queries: "../../repository/transactionrepo"
-    engine: "mysql"
-    gen:
-      go:
-        package: "transactionrepo"
-        emit_exact_table_names: true
-        emit_interface: true
-        sql_package: "database/sql"
-        out: "../../repository/transactionrepo"
+        out: "../../repository"
         emit_methods_with_db_argument: true
         emit_db_tags: true
