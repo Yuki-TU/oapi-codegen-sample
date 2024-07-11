@@ -31,13 +31,13 @@ sqlc:
 .PHONY: mock
 mock: ## mock作成
 	mockgen -source=./handler/usecase.go -destination=./handler/_mock/mock_usecase.go
-	mockgen -source=./repository/userrepo/querier.go -destination=./repository/userrepo/_mock/mock_querier.go
 	mockgen -source=./repository/repository.go -destination=./repository/_mock/mock_repository.go
+	mockgen -source=./repository/querier.go -destination=./repository/_mock/mock_querier.go
+	mockgen -source=./repository/db.go -destination=./repository/_mock/mock_db.go
 
 .PHONY: test
 test: 
-	# go test -cover -race -shuffle=on ./...
-	go test -cover -race ./...
+	go test -cover -race -shuffle=on ./...
 
 .PHONY: help
 help: ## Show options

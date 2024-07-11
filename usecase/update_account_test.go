@@ -6,9 +6,8 @@ import (
 
 	"github.com/Yuki-TU/oapi-codegen-sample/gen"
 	"github.com/Yuki-TU/oapi-codegen-sample/myerrors"
+	"github.com/Yuki-TU/oapi-codegen-sample/repository"
 	mock_repository "github.com/Yuki-TU/oapi-codegen-sample/repository/_mock"
-	"github.com/Yuki-TU/oapi-codegen-sample/repository/userrepo"
-	mock_userrepo "github.com/Yuki-TU/oapi-codegen-sample/repository/userrepo/_mock"
 	"github.com/Yuki-TU/oapi-codegen-sample/testutils"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
@@ -22,12 +21,12 @@ func TestUpdateAccount(t *testing.T) {
 	}
 	type getByUserID struct {
 		userID int64
-		res    userrepo.GetByUserIDRow
+		res    repository.GetByUserIDRow
 		err    error
 		times  int
 	}
 	type updateAccount struct {
-		params userrepo.UpdateUserParams
+		params repository.UpdateUserParams
 		err    error
 		times  int
 	}
@@ -47,7 +46,7 @@ func TestUpdateAccount(t *testing.T) {
 			},
 			getByUserID: getByUserID{
 				userID: 2,
-				res: userrepo.GetByUserIDRow{
+				res: repository.GetByUserIDRow{
 					ID:    2,
 					Email: "test",
 				},
@@ -55,7 +54,7 @@ func TestUpdateAccount(t *testing.T) {
 				times: 1,
 			},
 			updateAccount: updateAccount{
-				params: userrepo.UpdateUserParams{
+				params: repository.UpdateUserParams{
 					ID:             2,
 					FirstName:      "test",
 					FamilyName:     "test",
@@ -83,12 +82,12 @@ func TestUpdateAccount(t *testing.T) {
 			},
 			getByUserID: getByUserID{
 				userID: 2,
-				res:    userrepo.GetByUserIDRow{},
+				res:    repository.GetByUserIDRow{},
 				err:    sql.ErrNoRows,
 				times:  1,
 			},
 			updateAccount: updateAccount{
-				params: userrepo.UpdateUserParams{
+				params: repository.UpdateUserParams{
 					ID:             2,
 					FirstName:      "test",
 					FamilyName:     "test",
@@ -114,7 +113,7 @@ func TestUpdateAccount(t *testing.T) {
 			},
 			getByUserID: getByUserID{
 				userID: 2,
-				res: userrepo.GetByUserIDRow{
+				res: repository.GetByUserIDRow{
 					ID:    2,
 					Email: "test",
 				},
@@ -122,7 +121,7 @@ func TestUpdateAccount(t *testing.T) {
 				times: 1,
 			},
 			updateAccount: updateAccount{
-				params: userrepo.UpdateUserParams{
+				params: repository.UpdateUserParams{
 					ID:             2,
 					FirstName:      "test",
 					FamilyName:     "test",
@@ -150,14 +149,14 @@ func TestUpdateAccount(t *testing.T) {
 
 			// モックの定義
 			mockTx := testutils.NewTxForMock(t, ctx)
-
-			mockUserRepo := mock_userrepo.NewMockQuerier(ctrl)
+			mockUserRepo := mock_repository.NewMockQuerier(ctrl)
 			mockUserRepo.
 				EXPECT().GetByUserID(ctx, mockTx, tt.getByUserID.userID).Return(tt.getByUserID.res, tt.getByUserID.err).Times(tt.getByUserID.times)
 			mockUserRepo.
 				EXPECT().UpdateUser(ctx, mockTx, tt.updateAccount.params).Return(tt.updateAccount.err).Times(tt.updateAccount.times)
 
 			mockBeginner := mock_repository.NewMockBeginner(ctrl)
+
 			mockBeginner.EXPECT().BeginTx(ctx, nil).Return(mockTx, nil)
 
 			// 実行

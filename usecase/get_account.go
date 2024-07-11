@@ -7,22 +7,18 @@ import (
 	"github.com/Yuki-TU/oapi-codegen-sample/domain/model"
 	"github.com/Yuki-TU/oapi-codegen-sample/myerrors"
 	"github.com/Yuki-TU/oapi-codegen-sample/repository"
-	"github.com/Yuki-TU/oapi-codegen-sample/repository/transactionrepo"
-	"github.com/Yuki-TU/oapi-codegen-sample/repository/userrepo"
 	"github.com/cockroachdb/errors"
 )
 
 type GetAccount struct {
-	UserRepo        userrepo.Querier
-	TransactionRepo transactionrepo.TransactionRepoer
-	DB              repository.DBer
+	Repo repository.Querier
+	DB   repository.DBTX
 }
 
-func NewGetAccount(urepo userrepo.Querier, trepo transactionrepo.TransactionRepoer, db *sql.DB) *GetAccount {
+func NewGetAccount(repo repository.Querier, db *sql.DB) *GetAccount {
 	return &GetAccount{
-		UserRepo:        urepo,
-		TransactionRepo: trepo,
-		DB:              db,
+		Repo: repo,
+		DB:   db,
 	}
 }
 
@@ -41,7 +37,7 @@ func (ga *GetAccount) GetAccount(ctx context.Context) (GetAccountResponse, error
 	userID := 1
 
 	// Emailよりユーザ情報を取得する
-	user, err := ga.UserRepo.GetByUserID(ctx, ga.DB, int64(userID))
+	user, err := ga.Repo.GetByUserID(ctx, ga.DB, int64(userID))
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return GetAccountResponse{}, errors.Join(err, myerrors.ErrNotUser)
@@ -49,7 +45,7 @@ func (ga *GetAccount) GetAccount(ctx context.Context) (GetAccountResponse, error
 	}
 
 	// 取得ポイントを取得する
-	point, err := ga.TransactionRepo.GetByUserID(ctx, ga.DB, uint64(userID))
+	point, err := ga.Repo.GetPointByUserID(ctx, ga.DB, uint64(userID))
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return GetAccountResponse{

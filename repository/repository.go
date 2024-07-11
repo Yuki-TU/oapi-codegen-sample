@@ -62,13 +62,5 @@ type Beginner interface {
 	BeginTx(ctx context.Context, opts *sql.TxOptions) (*sql.Tx, error)
 }
 
-type DBer interface {
-	ExecContext(context.Context, string, ...interface{}) (sql.Result, error)
-	PrepareContext(context.Context, string) (*sql.Stmt, error)
-	QueryContext(context.Context, string, ...interface{}) (*sql.Rows, error)
-	QueryRowContext(context.Context, string, ...interface{}) *sql.Row
-}
-
 // Beginnerインターフェースがsql.DBのメソッドを定義しているかのチェック
 var _ Beginner = (*sql.DB)(nil)
-var _ DBer = (*sql.DB)(nil)
