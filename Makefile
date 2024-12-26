@@ -17,7 +17,7 @@ new-mg: ## 新規作成
 	sql-migrate new -config=./_tools/sql-migrate/config.yaml -env=development $(name)
 
 mg-up: ## マイグレーション実行
-	# sql-migrate up -config=./_tools/sql-migrate/config.yaml -env=development
+	sql-migrate up -config=./_tools/sql-migrate/config.yaml -env=development
 	sql-migrate up -config=./_tools/sql-migrate/config.yaml -env=test
 
 mg-down: ## マイグレーション戻す
