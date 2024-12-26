@@ -2,7 +2,7 @@
 # ----------------------------------------------
 # ビルド用環境
 # ----------------------------------------------
-FROM golang:1.22-bullseye AS deploy-builder
+FROM golang:1.23-bullseye AS deploy-builder
 
 WORKDIR /app
 
@@ -31,17 +31,19 @@ CMD ["./app"]
 # ----------------------------------------------
 # 開発環境
 # ----------------------------------------------
-FROM golang:1.22-alpine AS dev
+FROM golang:1.23-alpine AS dev
 
 WORKDIR /app
 
-RUN apk update && apk add alpine-sdk jq mysql mysql-client nodejs npm
+RUN apk update && apk add alpine-sdk jq mysql mysql-client nodejs npm binutils-gold
 
 RUN go install github.com/air-verse/air@latest \
   && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest \
   && go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@latest \
-	&& go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest \
-	&& go install github.com/rubenv/sql-migrate/...@latest \
+  && go install github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest \
+  && go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest \
+  && go install github.com/rubenv/sql-migrate/...@latest \
   && go install github.com/google/wire/cmd/wire@latest \
+  && go install github.com/k1LoW/tbls@latest \
   && go install go.uber.org/mock/mockgen@latest \
   npm i -g @redocly/cli@latest
