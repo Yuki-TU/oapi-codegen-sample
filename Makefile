@@ -37,7 +37,7 @@ mock: ## mock作成
 	mockgen -source=./repository/db.go -destination=./repository/_mock/mock_db.go
 
 .PHONY: test
-test: 
+test: ## テスト実行
 	go test -cover -race -shuffle=on ./...
 
 .PHONY: dbdoc
