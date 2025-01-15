@@ -22,6 +22,7 @@ mg-up: ## マイグレーション実行
 
 mg-down: ## マイグレーション戻す
 	sql-migrate down -config=./_tools/sql-migrate/config.yaml -env=development
+	sql-migrate down -config=./_tools/sql-migrate/config.yaml -env=test
 
 .PHONY: sqlc
 sqlc:
