@@ -1,7 +1,7 @@
 
 -- +migrate Up
 CREATE TABLE `users` (
-    `id`                      BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ユーザーの識別子',
+    `id`                      BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ユーザーの識別子',
     `family_name`             VARCHAR(256) NOT NULL COMMENT '苗字',
     `family_name_kana`        VARCHAR(256) NOT NULL COMMENT '苗字カナ',
     `first_name`              VARCHAR(256) NOT NULL COMMENT '名前',
