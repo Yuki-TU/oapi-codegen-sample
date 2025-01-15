@@ -40,7 +40,13 @@ mock: ## mock作成
 test: 
 	go test -cover -race -shuffle=on ./...
 
+.PHONY: dbdoc
+dbdoc: ## DBドキュメント作成
+	@rm -rf ./docs/schema
+	@docker compose exec app tbls doc
+
 .PHONY: help
 help: ## Show options
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+

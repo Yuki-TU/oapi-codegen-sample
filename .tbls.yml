@@ -1,0 +1,23 @@
+# DSN (Database Source Name) to connect database
+dsn: mysql://admin:password@db:3306/point_app
+
+# Path to generate document
+# Default is `dbdoc`
+docPath: docs/schema
+
+dict:
+  Tables: テーブル一覧
+  Description: 概要
+  Columns: カラム一覧
+  Indexes: INDEX一覧
+  Constraints: 制約一覧
+  Triggers: トリガー
+  Relations: ER図
+  Name: 名前
+  Comment: コメント
+  Type: タイプ
+  Default: デフォルト値
+  Children: 子テーブル
+  Parents: 親テーブル
+  Definition: 定義
+  Table Definition: テーブル定義
